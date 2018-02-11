@@ -54,6 +54,9 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, "public")));
+app.use('/lib/jquery', express.static(path.join(__dirname, 'node_modules/jquery/dist')));
+app.use('/lib/bootstrap', express.static(path.join(__dirname, 'node_modules/bootstrap/dist')));
+
 
 const index = require("./routes/index");
 const authRoutes = require("./routes/authentication");
