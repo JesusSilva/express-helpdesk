@@ -59,7 +59,7 @@ app.use('/lib/bootstrap', express.static(path.join(__dirname, 'node_modules/boot
 
 
 const index = require("./routes/index");
-const authRoutes = require("./routes/authentication");
+const authRoutes = require("./routes/auth");
 app.use("/", index);
 app.use("/", authRoutes);
 app.use('/', postRoutes);

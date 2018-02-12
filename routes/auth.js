@@ -4,7 +4,7 @@ const router     = express.Router();
 const { ensureLoggedIn, ensureLoggedOut } = require('connect-ensure-login');
 
 router.get('/login', ensureLoggedOut(), (req, res) => {
-    res.render('authentication/login', { message: req.flash('error')});
+    res.render('auth/login', { message: req.flash('error')});
 });
 
 router.post('/login', ensureLoggedOut(), passport.authenticate('local-login', {
@@ -14,7 +14,7 @@ router.post('/login', ensureLoggedOut(), passport.authenticate('local-login', {
 }));
 
 router.get('/signup', ensureLoggedOut(), (req, res) => {
-    res.render('authentication/signup', { message: req.flash('error')});
+    res.render('auth/signup', { message: req.flash('error')});
 });
 
 router.post('/signup', ensureLoggedOut(), passport.authenticate('local-signup', {
@@ -24,7 +24,7 @@ router.post('/signup', ensureLoggedOut(), passport.authenticate('local-signup', 
 }));
 
 router.get('/profile', ensureLoggedIn('/login'), (req, res) => {
-    res.render('authentication/profile', {
+    res.render('auth/profile', {
         user : req.user
     });
 });
@@ -34,5 +34,15 @@ router.get('/logout', ensureLoggedIn('/login'), (req, res) => {
     req.logout();
     res.redirect('/');
 });
+
+// we will call this to start the GitHub Login process
+router.get('/login/github', passport.authenticate('github'));
+
+// GitHub will call this URL
+router.get('/login/github/callback', passport.authenticate('github', { failureRedirect: '/login' }),
+  function(req, res) {
+    res.redirect('/profile');
+  }
+);
 
 module.exports = router;
